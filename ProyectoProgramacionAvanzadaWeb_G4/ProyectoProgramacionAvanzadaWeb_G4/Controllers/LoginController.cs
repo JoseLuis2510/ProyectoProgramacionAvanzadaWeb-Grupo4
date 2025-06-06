@@ -1,12 +1,20 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Dapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using ProyectoProgramacionAvanzadaWeb_G4.Models;
 
 namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 {
     public class LoginController : Controller
     {
-        // GET: LoginController
+        private readonly IConfiguration _configuration;
+        public LoginController(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
+
         [HttpGet]
         public ActionResult Index()
         {
@@ -17,13 +25,55 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         public ActionResult Index(Autenticacion autenticacion)
       
         {
-            //return View();
-            return RedirectToAction("Index", "Home");
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.QueryFirstOrDefault<Autenticacion>("IniciarSesion",
+                    new
+                    {
+                        autenticacion.NombreUsuario,
+                        autenticacion.Contrasenna
+                    }
+                    );
+
+                if (resultado != null)
+                    return RedirectToAction("Index", "Home");
+
+                ViewBag.Mensaje = "No se pudo autenticar";
+                return View();
+            }
         }
 
+        [HttpGet]
         public ActionResult Registro()
         {
-            return View();
+            using (var context = new SqlConnection(""))
+                return View();
+        }
+
+        [HttpPost]
+        public ActionResult Registro(Autenticacion autenticacion)
+        {
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var Estado = true;
+
+                var resultado = context.Execute("RegistrarUsuario",
+                    new
+                    {
+                        autenticacion.Nombre,
+                        autenticacion.Correo,
+                        autenticacion.NombreUsuario,
+                        autenticacion.Contrasenna,
+                        Estado
+                    }
+                    );
+
+                if (resultado > 0)
+                    return RedirectToAction("Index", "Login");
+
+                ViewBag.Mensaje = "No se pudo registrar";
+                return View();
+            }
         }
 
         public ActionResult RecuperacionContrasena()

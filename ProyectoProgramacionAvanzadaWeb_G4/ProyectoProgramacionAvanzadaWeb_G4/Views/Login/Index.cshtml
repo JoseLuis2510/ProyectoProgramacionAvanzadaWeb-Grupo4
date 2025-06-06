@@ -16,9 +16,16 @@
                             </a>
                             <p class="text-center">Inicio de Sesión</p>
                             <form asp-controller="Login" asp-action="Index">
+
+                                @if (ViewBag.Mensaje != null)
+                                {
+                                    <div class="alert alert-info" role="alert">
+                                        @ViewBag.Mensaje
+                                    </div>
+                                }
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Correo electrónico</label>
-                                    <input type="email" asp-for="CorreoElectronico" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label for="exampleInputText" class="form-label">Nombre de usuario</label>
+                                    <input type="text" asp-for="NombreUsuario" class="form-control" id="exampleInputText">
                                 </div>
                                 <div class="mb-4">
                                     <label for="exampleInputPassword1" class="form-label">Contraseña</label>
