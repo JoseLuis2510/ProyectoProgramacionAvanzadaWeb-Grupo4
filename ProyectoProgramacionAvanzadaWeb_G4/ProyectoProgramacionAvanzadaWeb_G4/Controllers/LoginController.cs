@@ -3,15 +3,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using ProyectoProgramacionAvanzadaWeb_G4.Models;
+using static System.Net.WebRequestMethods;
 
 namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 {
     public class LoginController : Controller
     {
         private readonly IConfiguration _configuration;
-        public LoginController(IConfiguration configuration)
+        private readonly IHttpClientFactory _http;
+        public LoginController(IConfiguration configuration, IHttpClientFactory http)
         {
             _configuration = configuration;
+            _http = http;
         }
 
 
@@ -25,17 +28,12 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         public ActionResult Index(Autenticacion autenticacion)
       
         {
-            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            using (var http = _http.CreateClient())
             {
-                var resultado = context.QueryFirstOrDefault<Autenticacion>("IniciarSesion",
-                    new
-                    {
-                        autenticacion.NombreUsuario,
-                        autenticacion.Contrasenna
-                    }
-                    );
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                var resultado = http.PostAsJsonAsync("api/Login/Index", autenticacion).Result;
 
-                if (resultado != null)
+                if (resultado.IsSuccessStatusCode)
                     return RedirectToAction("Index", "Home");
 
                 ViewBag.Mensaje = "No se pudo autenticar";
@@ -53,22 +51,12 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         [HttpPost]
         public ActionResult Registro(Autenticacion autenticacion)
         {
-            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            using (var http = _http.CreateClient())
             {
-                var Estado = true;
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                var resultado = http.PostAsJsonAsync("api/Login/Registro", autenticacion).Result;
 
-                var resultado = context.Execute("RegistrarUsuario",
-                    new
-                    {
-                        autenticacion.Nombre,
-                        autenticacion.Correo,
-                        autenticacion.NombreUsuario,
-                        autenticacion.Contrasenna,
-                        Estado
-                    }
-                    );
-
-                if (resultado > 0)
+                if (resultado.IsSuccessStatusCode)
                     return RedirectToAction("Index", "Login");
 
                 ViewBag.Mensaje = "No se pudo registrar";
