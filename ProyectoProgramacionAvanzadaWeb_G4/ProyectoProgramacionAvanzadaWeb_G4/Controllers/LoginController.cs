@@ -35,9 +35,12 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 
                 if (resultado.IsSuccessStatusCode)
                     return RedirectToAction("Index", "Home");
-
-                ViewBag.Mensaje = "No se pudo autenticar";
-                return View();
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View();
+                };
             }
         }
 
@@ -58,9 +61,12 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 
                 if (resultado.IsSuccessStatusCode)
                     return RedirectToAction("Index", "Login");
-
-                ViewBag.Mensaje = "No se pudo registrar";
-                return View();
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View();
+                }
             }
         }
 

@@ -1,4 +1,5 @@
 ﻿using ApiProyecto.Models;
+using ApiProyecto.Services;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
@@ -13,9 +14,11 @@ namespace ApiProyecto.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public LoginController(IConfiguration configuration)
+        private readonly IUtilitarios _utilitarios;
+        public LoginController(IConfiguration configuration, IUtilitarios utilitarios)
         {
             _configuration = configuration;
+            _utilitarios = utilitarios;
         }
 
         [HttpPost]
@@ -28,16 +31,16 @@ namespace ApiProyecto.Controllers
                 var resultado = context.QueryFirstOrDefault<Autenticacion>("IniciarSesion",
                     new
                     {
-                        autenticacion.NombreUsuario,
+                        autenticacion.Correo,
                         autenticacion.Contrasenna
                     }
                     );
                
 
-                if (resultado != null)
-                    return Ok();
+                if (resultado !=null )
+                    return Ok(_utilitarios.RespuestaCorrecta(resultado));
                 else
-                    return NotFound();
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Informacion Inválida"));
             }
         }
 
@@ -55,15 +58,15 @@ namespace ApiProyecto.Controllers
                     {
                         autenticacion.Nombre,
                         autenticacion.Correo,
-                        autenticacion.NombreUsuario,
+                        autenticacion.Identificacion,
                         autenticacion.Contrasenna,
                         Estado
                     }
                     );
-                if (resultado > 0)
-                    return Ok();
+                if(resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
                 else
-                    return BadRequest();
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Usuario no registrado"));
             }
         }
     }
