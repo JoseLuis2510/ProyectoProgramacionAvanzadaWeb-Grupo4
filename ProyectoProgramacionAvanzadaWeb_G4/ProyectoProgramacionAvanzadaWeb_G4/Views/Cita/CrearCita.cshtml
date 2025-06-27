@@ -1,0 +1,43 @@
+﻿@model Cita
+@{
+    ViewData["Title"] = "Home Page";
+}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-4">
+                <div class="card-header bg-primary text-white text-center">
+                    <h4 class="mb-0">Registro de Sesion de Ejercicios</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-controller="Cita" asp-action="CrearCita" method="post">
+                        @if (ViewBag.Mensaje != null)
+                        {
+                            <div class="alert alert-info" role="alert">
+                                @ViewBag.Mensaje
+                            </div>
+                        }
+                        <div class="form-floating mb-3">
+                            <input type="text" asp-for="Descripcion" class="form-control" id="DescripcionInput" placeholder="Descripcion" required />
+                            <label for="MarcaInput">Descripcion</label>
+                            <span asp-validation-for="Descripcion" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-floating mb-3">
+                            @Html.DropDownListFor(model => model.IdHorario,
+                                     ViewBag.Horario as List<SelectListItem>,
+                                     "Seleccione un horario",
+                                     new { @class = "form-select", id = "HorarioSelect", required = "required" })
+                        </div>
+
+
+
+
+
+                        <button type="submit" class="btn btn-primary w-100 py-2 fs-5">Registrarse</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

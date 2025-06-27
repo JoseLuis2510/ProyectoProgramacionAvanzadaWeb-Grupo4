@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using ProyectoProgramacionAvanzadaWeb_G4.Models;
 using static System.Net.WebRequestMethods;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 {
@@ -32,8 +33,9 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
                 var resultado = http.PostAsJsonAsync("api/Login/Index", autenticacion).Result;
-
+                
                 if (resultado.IsSuccessStatusCode)
+
                     return RedirectToAction("Index", "Home");
                 else
                 {

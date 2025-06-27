@@ -1,0 +1,44 @@
+﻿@model Horario
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card shadow rounded-4">
+                <div class="card-header text-center bg-primary text-white">
+                    <h4 class="mb-0">Crear Horario</h4>
+                </div>
+
+                <div class="card-body">
+                    <p class="text-center text-muted">Ingrese los datos para crear un nuevo horario</p>
+
+                    <form asp-controller="Horario" asp-action="CrearHorario" method="post">
+                        @if (ViewBag.MensajePantalla != null)
+                        {
+                            <div class="alert alert-danger text-center" role="alert">
+                                @ViewBag.MensajePantalla
+                            </div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Horario</label>
+                            <input asp-for="HoraFecha" class="form-control" type="datetime-local" />
+                            <span asp-validation-for="HoraFecha" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Observaciones</label>
+                            <input asp-for="Observacion" class="form-control" />
+                            <span asp-validation-for="Observacion" class="text-danger"></span>
+                        </div>
+
+                        <button class="btn btn-primary w-100 py-2 fs-5 mb-3" type="submit">Crear horario</button>
+
+                        <div class="text-center">
+                            <a class="text-primary fw-bold" asp-controller="Home" asp-action="Index">Volver al inicio</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

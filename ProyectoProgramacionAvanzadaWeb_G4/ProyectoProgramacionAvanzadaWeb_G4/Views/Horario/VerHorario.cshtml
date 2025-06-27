@@ -1,0 +1,33 @@
+﻿@model List<ProyectoProgramacionAvanzadaWeb_G4.Models.Horario>
+<div class="container mt-4">
+    <h4 class="mb-3 text-primary">Lista de Horarios</h4>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Fecha y Hora</th>
+                    <th>Observación</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@item.HoraFecha.ToString("dd/MM/yyyy HH:mm")</td>
+                            <td>@item.Observacion</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">No hay horarios registrados.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
