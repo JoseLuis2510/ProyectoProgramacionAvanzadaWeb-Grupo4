@@ -4,89 +4,123 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Proyecto Programación Avanzada Web</title>
-    <link rel="shortcut icon" type="image/png" href="~/css/images/seodashlogo.png" />
+    <title>Clinica Dental</title>
     <link rel="stylesheet" href="~/css/simplebar.css" />
     <link rel="stylesheet" href="~/css/styles.css" />
 </head>
 
-<body>
-    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-         data-sidebar-position="fixed" data-header-position="fixed">
-        <aside class="left-sidebar">
-            <div>
-                <div class="brand-logo d-flex align-items-center justify-content-between">
-                    <a href="./index.html" class="text-nowrap logo-img">
-                        <img src="~/css/images/logo-light.svg" alt="" />
-                    </a>
-                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                        <i class="ti ti-x fs-8"></i>
-                    </div>
-                </div>
-                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                    <ul id="sidebarnav">
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                            <span class="hide-menu">Principal</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Home" asp-action="Index" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Inicio</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                            <span class="hide-menu">Horarios</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Horario" asp-action="CrearHorario" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Crear Horario</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Horario" asp-action="VerHorario" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Ver Horario</span>
-                            </a>
-                        </li>
-                        <li class="nav-small-cap">
-                            <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                            <span class="hide-menu">Citas</span>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Agendar Cita</span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-            </div>
-        </aside>
 
-        <div class="body-wrapper">
-            <header class="app-header">
-                <nav class="navbar navbar-expand-lg navbar-light">
-                    <ul class="navbar-nav">
-                        <li class="nav-item d-block d-xl-none">
-                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                                <i class="ti ti-menu-2"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
-                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
-     
+    <body>
+        <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+             data-sidebar-position="fixed" data-header-position="fixed">
+
+            <aside class="left-sidebar">
+                <div>
+                    <div class="brand-logo d-flex align-items-center justify-content-between">
+                        <a asp-controller="Home" asp-action="Index" class="text-nowrap logo-img">
+                            <img src="~/css/images/logo.png" alt="" />
+                        </a>
+                        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                            <i class="ti ti-x fs-8"></i>
+                        </div>
+                    </div>
+                    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                        <ul id="sidebarnav">
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                <span class="hide-menu">Principal</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Home" asp-action="Index" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Inicio</span>
+                                </a>
+                            </li>
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                <span class="hide-menu">Horarios</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Horario" asp-action="CrearHorario" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="mdi:calendar" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Crear Horario</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Horario" asp-action="VerHorario" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="mdi:view-list" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Ver Horario</span>
+                                </a>
+                            </li>
+                            <li class="nav-small-cap">
+                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                <span class="hide-menu">Citas</span>
+                            </li>
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Agendar Cita</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+
+            <div class="body-wrapper">
+                <header class="app-header">
+                    <nav class="navbar navbar-expand-lg navbar-light">
+                        <ul class="navbar-nav">
+                            <li class="nav-item d-block d-xl-none">
+                                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                                    <i class="ti ti-menu-2"></i>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- MENÚ DE NAVEGACIÓN -->
+                        <!-- CONTACTO (centrado con Bootstrap) -->
+                        <div class="w-100 d-flex justify-content-center bg-light py-2">
+                            <div class="d-flex flex-wrap justify-content-center gap-5">
+                                <!-- Teléfono -->
+                                <div class="d-flex align-items-center">
+                                    <iconify-icon icon="ic:baseline-call" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                    <div>
+                                        <small class="text-muted d-block">Central Telefónica</small>
+                                        <strong>+506 2222–2222</strong>
+                                    </div>
+                                </div>
+
+                                <!-- WhatsApp -->
+                                <div class="d-flex align-items-center">
+                                    <iconify-icon icon="ic:baseline-whatsapp" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                    <div>
+                                        <small class="text-muted d-block">WhatsApp</small>
+                                        <strong>+506 8888-8888</strong>
+                                    </div>
+                                </div>
+
+                                <!-- Correo -->
+                                <div class="d-flex align-items-center">
+                                    <iconify-icon icon="ic:baseline-email" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                    <div>
+                                        <small class="text-muted d-block">Escríbanos</small>
+                                        <strong>info@clinicadental.com</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PERFIL DE USUARIO -->
+                        <ul class="navbar-nav flex-row align-items-center">
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                                    aria-expanded="false">
@@ -111,28 +145,28 @@
                                 </div>
                             </li>
                         </ul>
+                    </nav>
+                </header>
+
+                <div class="container-fluid">
+                    <div class="py-6 px-6 text-center">
+                        @RenderBody()
+                        <footer class="footer text-center">
+                            <!-- Aquí va contenido del footer si quieres -->
+                        </footer>
                     </div>
-                </nav>
-            </header>
-            <div class="container-fluid">
-                <div class="py-6 px-6 text-center">
-                    @RenderBody()
-                    <footer class="footer text-center">
-                        
-                    </footer>
                 </div>
 
+                <script src="~/lib/jquery.min.js"></script>
+                <script src="~/lib/bootstrap.bundle.min.js"></script>
+                <script src="~/lib/simplebar.js"></script>
+                <script src="~/lib/sidebarmenu.js"></script>
+                <script src="~/lib/app.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
             </div>
-
-            <script src="~/lib/jquery.min.js"></script>
-            <script src="~/lib/bootstrap.bundle.min.js"></script>
-            <script src="~/lib/simplebar.js"></script>
-            <script src="~/lib/sidebarmenu.js"></script>
-            <script src="~/lib/app.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
         </div>
-    </div>
-</body>
+    </body>
+
 
 
 </html>
