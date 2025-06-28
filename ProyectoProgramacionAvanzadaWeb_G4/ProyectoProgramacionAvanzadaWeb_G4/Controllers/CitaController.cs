@@ -20,7 +20,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             _http = http;
         }
 
-       
+
         [HttpGet]
         public IActionResult CrearCita()
         {
@@ -28,27 +28,26 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             {
                 httpClient.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
 
-                var horarios = httpClient.GetFromJsonAsync<List<Horario>>("api/Horario/VerHorario").Result;
+                var response = httpClient.GetAsync("api/Horario/VerHorario").Result;
 
-                if (horarios == null)
+                if (response.IsSuccessStatusCode)
                 {
-                    // Manejar el caso cuando no hay datos o la llamada falla
-                    ViewBag.Horario = new List<SelectListItem>();
-                    ViewBag.Mensaje = "No se encontraron horarios disponibles.";
-                }
-                else
-                {
+                    var horarios = response.Content.ReadFromJsonAsync<List<Horario>>().Result;
+
                     ViewBag.Horario = horarios.Select(h => new SelectListItem
                     {
                         Value = h.IdHorario.ToString(),
                         Text = h.HoraFecha.ToString("g")
                     }).ToList();
                 }
+                else
+                {
+                    // Aquí manejas errores como 404 o 500
+                    ViewBag.Horario = new List<SelectListItem>();
+                    ViewBag.Mensaje = "No se encontraron horarios disponibles.";
+                }
+
                 return View();
-
-
-
-
             }
         }
 

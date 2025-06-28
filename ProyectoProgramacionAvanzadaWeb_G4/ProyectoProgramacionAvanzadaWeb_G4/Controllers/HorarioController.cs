@@ -49,10 +49,21 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             using (var http = _http.CreateClient())
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
-                var horarios = http.GetFromJsonAsync<List<Horario>>("api/Horario/VerHorario").Result;
-                return View(horarios);
-            }
 
+                var response = http.GetAsync("api/Horario/VerHorario").Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var horarios = response.Content.ReadFromJsonAsync<List<Horario>>().Result;
+                    return View(horarios);
+                }
+                else
+                {
+                   
+                    ViewBag.Mensaje = "No se encontraron horarios.";
+                    return View(new List<Horario>()); 
+                }
+            }
         }
     }
 }
