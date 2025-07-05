@@ -1,9 +1,11 @@
+using ProyectoProgramacionAvanzadaWeb_G4.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient();//Libreria para que el proyecto se comunique con el API
-
+builder.Services.AddScoped<IUtilitarios, Utilitarios>();
 
 var app = builder.Build();
 

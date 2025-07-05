@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using ProyectoProgramacionAvanzadaWeb_G4.Models;
+using ProyectoProgramacionAvanzadaWeb_G4.Services;
+using System.Text;
 using static System.Net.WebRequestMethods;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -11,10 +13,12 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
     public class LoginController : Controller
     {
         private readonly IConfiguration _configuration;
+        private readonly IUtilitarios _utilitarios;
         private readonly IHttpClientFactory _http;
-        public LoginController(IConfiguration configuration, IHttpClientFactory http)
+        public LoginController(IConfiguration configuration, IUtilitarios utilitarios, IHttpClientFactory http)
         {
             _configuration = configuration;
+            _utilitarios = utilitarios;
             _http = http;
         }
 
@@ -29,6 +33,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         public ActionResult Index(Autenticacion autenticacion)
       
         {
+            autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
             using (var http = _http.CreateClient())
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -56,6 +61,8 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         [HttpPost]
         public ActionResult Registro(Autenticacion autenticacion)
         {
+            autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
+
             using (var http = _http.CreateClient())
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
@@ -72,9 +79,31 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             }
         }
 
+        [HttpGet]
         public ActionResult RecuperacionContrasena()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult RecuperacionContrasena(Autenticacion autenticacion)
+        {
+            using (var http = _http.CreateClient())
+            {
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                var resultado = http.PostAsJsonAsync("api/Login/RecuperacionContrasena", autenticacion).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View();
+                }
+            }
         }
 
         // GET: LoginController/Details/5

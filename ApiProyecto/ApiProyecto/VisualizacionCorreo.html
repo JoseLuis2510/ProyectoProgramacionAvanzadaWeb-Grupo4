@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Contraseña temporal</title>
+    <style>
+        body {
+            background: #e8ebf0;
+            font-family: 'Roboto', Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: #2c3e50;
+        }
+
+        .card {
+            max-width: 600px;
+            margin: auto;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            border-left: 10px solid #3498db;
+        }
+
+        .card-header {
+            padding: 20px;
+            background: #ffffff;
+            text-align: center;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+            .card-header img {
+                max-width: 150px;
+                height: auto;
+            }
+
+        .card-body {
+            padding: 30px;
+        }
+
+            .card-body h2 {
+                font-size: 22px;
+                margin-bottom: 15px;
+                color: #3498db;
+            }
+
+            .card-body p {
+                font-size: 15px;
+                line-height: 1.7;
+                margin-bottom: 20px;
+            }
+
+        .code-box {
+            background-color: #f5f8fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+            letter-spacing: 1px;
+            text-align: center;
+            border: 1px dashed #3498db;
+            margin: 20px 0;
+        }
+
+        .card-footer {
+            padding: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: #7f8c8d;
+            background: #f9f9f9;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        @media (max-width: 600px) {
+            .card-body {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-body">
+            <h2>Hola @@Usuario,</h2>
+            <p>Hemos procesado tu solicitud de restablecimiento de contraseña. A continuación, te enviamos una contraseña temporal para que puedas ingresar al sistema:</p>
+
+            <div class="code-box">@@Contrasenna</div>
+
+            <p>Por tu seguridad, te recomendamos cambiar esta contraseña después de iniciar sesión.</p>
+            <p>Este mensaje ha sido generado automáticamente. Por favor, no respondas a este correo.</p>
+        </div>
+        <div class="card-footer">
+            © 2025 | Clinica dental
+        </div>
+    </div>
+</body>
+</html>
