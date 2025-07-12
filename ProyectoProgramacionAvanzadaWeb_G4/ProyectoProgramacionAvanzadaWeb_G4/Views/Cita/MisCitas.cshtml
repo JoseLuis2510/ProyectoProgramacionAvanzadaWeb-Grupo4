@@ -1,0 +1,38 @@
+﻿@model List<ProyectoProgramacionAvanzadaWeb_G4.Models.Cita>
+
+<br>
+<div class="container mt-4">
+    <h4 class="mb-3 text-primary">Lista de Citas Agendadas</h4>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered">
+            <thead class="table-primary text-center">
+                <tr>
+                    <th>Descripción</th>
+                    <th>Fecha y Hora</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null && Model.Any())
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Descripcion</td>
+                            <td class="text-center">
+                                @(item.HoraFecha > DateTime.MinValue ? item.HoraFecha.ToString("dd/MM/yyyy HH:mm") : "No definido")
+
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="2" class="text-center text-muted">No tienes citas agendadas.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

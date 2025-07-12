@@ -14,5 +14,7 @@ namespace ApiProyecto.Services
         void EnviarCorreo(string destinatario, string asunto, string cuerpo);
 
         string Encrypt(string texto);
+
+        string GenerarToken(long IdUsuario);
     }
 }

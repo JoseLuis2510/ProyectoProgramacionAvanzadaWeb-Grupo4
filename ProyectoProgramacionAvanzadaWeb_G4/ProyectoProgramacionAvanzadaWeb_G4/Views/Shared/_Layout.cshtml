@@ -10,7 +10,18 @@
 </head>
 
 
-    <body>
+<body>
+    @{
+        var nombreUsuario = "";
+        if (Context.Session.GetString("Nombre").ToString() != null)
+        {
+            nombreUsuario = Context.Session.GetString("Nombre").ToString();
+        }
+
+
+
+    }
+  
         <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
              data-sidebar-position="fixed" data-header-position="fixed">
 
@@ -62,6 +73,13 @@
                                 <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
                                 <span class="hide-menu">Citas</span>
                             </li>
+                        @{
+                            var tieneCitaStr = Context.Session.GetString("TieneCita") ?? "false";
+                            bool tieneCita = bool.TryParse(tieneCitaStr, out var valor) ? valor : false;
+                        }
+
+                        @if (!tieneCita) // Mostrar solo si NO tiene cita
+                        {
                             <li class="sidebar-item">
                                 <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
                                     <span>
@@ -70,6 +88,25 @@
                                     <span class="hide-menu">Agendar Cita</span>
                                 </a>
                             </li>
+                        }else{
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Cita" asp-action="CitaAgendada" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Agendar Cita</span>
+                                </a>
+                            </li>
+                        }
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" asp-controller="Cita" asp-action="MisCitas" aria-expanded="false">
+                                <span>
+                                    <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                </span>
+                                <span class="hide-menu">Mis Citas</span>
+                            </a>
+                        </li>
                         </ul>
                     </nav>
                 </div>
@@ -124,7 +161,8 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
                                    aria-expanded="false">
-                                    <img src="~/css/images/user-1.jpg" alt="" width="35" height="35" class="rounded-circle">
+                                <img src="~/css/images/user-1.jpg" alt="" width="35" height="35" class="rounded-circle me-3">
+                                    <span style="font-size: 0.9rem; white-space: nowrap; color: #343a40; font-weight: 500;">@nombreUsuario</span>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                     <div class="message-body">
@@ -140,7 +178,7 @@
                                             <i class="ti ti-list-check fs-6"></i>
                                             <p class="mb-0 fs-3">Editar Perfil</p>
                                         </a>
-                                        <a href="./authentication-login.html" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
+                                    <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
                                     </div>
                                 </div>
                             </li>

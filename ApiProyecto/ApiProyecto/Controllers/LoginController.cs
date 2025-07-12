@@ -2,6 +2,7 @@
 using ApiProyecto.Models;
 using ApiProyecto.Services;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -27,6 +28,7 @@ namespace ApiProyecto.Controllers
 
         [HttpPost]
         [Route("Index")]
+        [AllowAnonymous]
         public ActionResult Index(Autenticacion autenticacion)
 
         {
@@ -39,22 +41,27 @@ namespace ApiProyecto.Controllers
                         autenticacion.Contrasenna
                     }
                     );
-               
 
-                if (resultado !=null )
+
+                if (resultado != null)
+                {
+                    resultado.Token = _utilitarios.GenerarToken(resultado.IdUsuario);
                     return Ok(_utilitarios.RespuestaCorrecta(resultado));
+                }
                 else
-                    return BadRequest(_utilitarios.RespuestaIncorrecta("Informacion Inválida"));
+                    return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue validada"));
             }
         }
 
         [HttpPost]
         [Route("Registro")]
+        [AllowAnonymous]
         public ActionResult Registro(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
             {
                 var Estado = true;
+                
                 
 
                 var resultado = context.Execute("RegistrarUsuario",
@@ -76,6 +83,7 @@ namespace ApiProyecto.Controllers
 
         [HttpPost]
         [Route("RecuperacionContrasena")]
+        [AllowAnonymous]
         public IActionResult RecuperacionContrasena(Autenticacion autenticacion)
         {
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))

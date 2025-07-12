@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Cita ya agendada";
+    var nombre = Context.Session.GetString("Nombre") ?? "Usuario";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg border-warning rounded-4">
+                <div class="card-header bg-warning text-dark text-center">
+                    <h4 class="mb-0">Ya tienes una cita agendada</h4>
+                </div>
+                <div class="card-body text-center">
+                    <p class="fs-5">Hola <strong>@nombre</strong>, ya tienes una cita registrada en el sistema.</p>
+                    <p class="fs-6">No puedes agendar una nueva hasta que canceles la actual.</p>
+
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary mt-3">
+                        Volver al inicio
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

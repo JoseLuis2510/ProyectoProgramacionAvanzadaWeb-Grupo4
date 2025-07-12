@@ -40,8 +40,14 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 var resultado = http.PostAsJsonAsync("api/Login/Index", autenticacion).Result;
                 
                 if (resultado.IsSuccessStatusCode)
-
+                {
+                    var datos = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<Autenticacion>>().Result;
+                    HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
+                    HttpContext.Session.SetString("IdUsuario", datos?.Contenido?.IdUsuario.ToString());
+                    HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
+                    HttpContext.Session.SetString("TieneCita", datos?.Contenido?.TieneCita.ToString());
                     return RedirectToAction("Index", "Home");
+                }
                 else
                 {
                     var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
@@ -104,6 +110,13 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                     return View();
                 }
             }
+        }
+
+        [HttpGet]
+        public IActionResult CerrarSesion()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Login");
         }
 
         // GET: LoginController/Details/5

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
@@ -34,7 +35,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 {
                     var horarios = response.Content.ReadFromJsonAsync<List<Horario>>().Result;
 
-                    ViewBag.Horario = horarios.Select(h => new SelectListItem
+                    ViewBag.IdHorario = horarios.Select(h => new SelectListItem
                     {
                         Value = h.IdHorario.ToString(),
                         Text = h.HoraFecha.ToString("g")
@@ -43,7 +44,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 else
                 {
                     // Aquí manejas errores como 404 o 500
-                    ViewBag.Horario = new List<SelectListItem>();
+                    ViewBag.IdHorario = new List<SelectListItem>();
                     ViewBag.Mensaje = "No se encontraron horarios disponibles.";
                 }
 
@@ -54,15 +55,28 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         [HttpPost]
         public IActionResult CrearCita(Cita cita)
         {
-
-
             using (var http = _http.CreateClient())
             {
                 http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+                var token = HttpContext.Session.GetString("JWT");
+                if (!string.IsNullOrEmpty(token))
+                {
+                    http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                }
+                else
+                {
+                    ViewBag.Mensaje = "No hay token JWT en sesión";
+                    return View();
+                }
+
                 var resultado = http.PostAsJsonAsync("api/Cita/CrearCita", cita).Result;
 
                 if (resultado.IsSuccessStatusCode)
-                    return RedirectToAction("CrearCita", "Cita");
+                {
+                    HttpContext.Session.SetString("TieneCita", "true");
+                    return RedirectToAction("Index", "Home");
+                }
                 else
                 {
                     var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
@@ -72,6 +86,46 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             }
         }
 
+        [HttpGet]
+        public IActionResult MisCitas()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+            // Agregar token en header Authorization
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var resultado = http.GetAsync("api/Cita/MisCitas").Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<List<Cita>>>().Result;
+                return View(contenido.Contenido);
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return View(new List<Cita>());
+            }
+
+            
+        }
+
+        [HttpGet]
+        public IActionResult CitaAgendada()
+        {
+            return View();
+        }
+
 
     }
+
+
 }

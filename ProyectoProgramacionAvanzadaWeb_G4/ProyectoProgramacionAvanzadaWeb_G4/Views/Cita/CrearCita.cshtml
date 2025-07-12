@@ -8,7 +8,7 @@
         <div class="col-md-6">
             <div class="card shadow-lg rounded-4">
                 <div class="card-header bg-primary text-white text-center">
-                    <h4 class="mb-0">Agende su cita</h4>
+                    <h4 class="mb-0">Agende su cita </h4>
                 </div>
                 <div class="card-body p-4">
                     <form asp-controller="Cita" asp-action="CrearCita" method="post">
@@ -26,7 +26,7 @@
 
                         <div class="form-floating mb-3">
                             @Html.DropDownListFor(model => model.IdHorario,
-                                     ViewBag.Horario as List<SelectListItem>,
+                                     ViewBag.IdHorario as List<SelectListItem>,
                                      "Seleccione un horario",
                                      new { @class = "form-select", id = "HorarioSelect", required = "required" })
                         </div>

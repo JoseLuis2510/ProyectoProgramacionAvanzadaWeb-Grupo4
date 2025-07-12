@@ -4,6 +4,12 @@ using System.Text;
 using ApiProyecto.Models;
 using Microsoft.Extensions.Configuration;
 using System.Security.Cryptography;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+
+
+
 
 namespace ApiProyecto.Services
 {
@@ -94,6 +100,29 @@ namespace ApiProyecto.Services
             }
 
             return Convert.ToBase64String(array);
+        }
+
+        public string GenerarToken(long IdUsuario)
+        {
+            var key = Encoding.UTF8.GetBytes(_configuration.GetSection("Start:LlaveCifrado").Value!);
+
+            var claims = new[]
+            {
+                new Claim("IdUsuario", IdUsuario.ToString()),
+            };
+
+            var signingCredentials = new SigningCredentials(
+                new SymmetricSecurityKey(key),
+                SecurityAlgorithms.HmacSha256
+            );
+
+            var tokenDescriptor = new JwtSecurityToken(
+                claims: claims,
+                expires: DateTime.UtcNow.AddMinutes(10),
+                signingCredentials: signingCredentials
+            );
+
+            return new JwtSecurityTokenHandler().WriteToken(tokenDescriptor);
         }
     }
 }
