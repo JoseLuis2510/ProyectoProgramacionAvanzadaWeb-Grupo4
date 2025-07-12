@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -124,8 +125,45 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             return View();
         }
 
+        [HttpPost]
+        public IActionResult Eliminar(long consecutivo)
+        {
+            Console.WriteLine($"Consecutivo recibido en Web: {consecutivo}");
 
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+           
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            
+            var content = new FormUrlEncodedContent(new[]
+            {new KeyValuePair<string, string>("consecutivo", consecutivo.ToString())});
+
+            
+            var response = http.PostAsync("api/Cita/Eliminar", content).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                HttpContext.Session.SetString("TieneCita", "false");
+                return RedirectToAction("MisCitas", "Cita");
+            }
+
+            ModelState.AddModelError(string.Empty, "No se pudo eliminar la cita.");
+            return RedirectToAction("MisCitas", "Cita");
+        }
     }
 
 
 }
+
+
+

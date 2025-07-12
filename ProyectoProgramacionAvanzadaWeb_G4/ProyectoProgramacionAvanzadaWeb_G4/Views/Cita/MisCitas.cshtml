@@ -10,6 +10,7 @@
                 <tr>
                     <th>Descripción</th>
                     <th>Fecha y Hora</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,7 +22,12 @@
                             <td>@item.Descripcion</td>
                             <td class="text-center">
                                 @(item.HoraFecha > DateTime.MinValue ? item.HoraFecha.ToString("dd/MM/yyyy HH:mm") : "No definido")
-
+                            </td>
+                            <td class="text-center">
+                                <form asp-action="Eliminar" asp-controller="Cita" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
+                                    <input type="hidden" name="consecutivo" value="@item.Consecutivo" />
+                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                </form>
                             </td>
                         </tr>
                     }
@@ -29,7 +35,7 @@
                 else
                 {
                     <tr>
-                        <td colspan="2" class="text-center text-muted">No tienes citas agendadas.</td>
+                        <td colspan="3" class="text-center text-muted">No tienes citas agendadas.</td>
                     </tr>
                 }
             </tbody>

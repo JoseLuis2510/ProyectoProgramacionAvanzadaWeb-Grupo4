@@ -17,10 +17,12 @@ namespace ApiProyecto.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IUtilitarios _utilitarios;
-        public CitaController(IConfiguration configuration, IUtilitarios utilitarios)
+        public CitaController(IConfiguration configuration, IUtilitarios utilitarios )
         {
             _configuration = configuration;
             _utilitarios = utilitarios;
+          
+
         }
 
         [HttpPost]
@@ -75,8 +77,42 @@ namespace ApiProyecto.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("Eliminar")]
+        [Authorize] 
+        public IActionResult Eliminar([FromForm] long consecutivo)
+        {
 
+                var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+                if (idUsuarioClaim == null)
+                    return Unauthorized("Token no válido o sin IdUsuario");
+
+                long IdUsuario = long.Parse(idUsuarioClaim.Value);
+
+                using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+                {
+                    var resultado = context.Execute("EliminarCita",
+                        new
+                        {
+                            consecutivo,
+                            IdUsuario
+                        },
+                        commandType: CommandType.StoredProcedure);
+
+                    if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                        return NotFound(_utilitarios.RespuestaIncorrecta("\"No se encontró la cita con ese consecutivo para este usuario"));
+
+            }
+
+        }
 
 
     }
+
+
+
+
 }
+
