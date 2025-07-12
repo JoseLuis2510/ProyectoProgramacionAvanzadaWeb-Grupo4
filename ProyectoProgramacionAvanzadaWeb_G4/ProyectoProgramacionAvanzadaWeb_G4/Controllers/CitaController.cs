@@ -1,5 +1,6 @@
 ﻿using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -120,6 +121,39 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
         }
 
         [HttpGet]
+        public IActionResult ObtenerCitas()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+            // Agregar token en header Authorization
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+
+            var resultado = http.GetAsync("api/Cita/ObtenerTodas").Result; // ajusta la ruta real
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<List<Cita>>>().Result;
+                return View(contenido.Contenido);
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return View(new List<Cita>());
+            }
+        }
+
+
+        [HttpGet]
         public IActionResult CitaAgendada()
         {
             return View();
@@ -153,12 +187,15 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 
             if (response.IsSuccessStatusCode)
             {
+                //HttpContext.Session.SetString("TieneCita", "false");
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
                 HttpContext.Session.SetString("TieneCita", "false");
+                ModelState.AddModelError(string.Empty, "No se pudo eliminar la cita.");
                 return RedirectToAction("MisCitas", "Cita");
             }
-
-            ModelState.AddModelError(string.Empty, "No se pudo eliminar la cita.");
-            return RedirectToAction("MisCitas", "Cita");
         }
     }
 

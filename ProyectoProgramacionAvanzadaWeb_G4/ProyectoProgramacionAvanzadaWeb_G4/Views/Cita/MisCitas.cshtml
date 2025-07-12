@@ -1,16 +1,17 @@
 ﻿@model List<ProyectoProgramacionAvanzadaWeb_G4.Models.Cita>
 
-<br>
 <div class="container mt-4">
-    <h4 class="mb-3 text-primary">Lista de Citas Agendadas</h4>
+    <br>
+    <br>
+    <h4 class="mb-3 text-primary text-center">Lista de Citas Agendadas</h4>
 
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered">
+        <table class="table table-striped table-hover table-bordered align-middle">
             <thead class="table-primary text-center">
                 <tr>
-                    <th>Descripción</th>
-                    <th>Fecha y Hora</th>
-                    <th>Acciones</th>
+                    <th scope="col">Descripción</th>
+                    <th scope="col">Fecha y Hora</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -19,14 +20,16 @@
                     foreach (var item in Model)
                     {
                         <tr>
-                            <td>@item.Descripcion</td>
+                            <td class="text-break">@item.Descripcion</td>
                             <td class="text-center">
                                 @(item.HoraFecha > DateTime.MinValue ? item.HoraFecha.ToString("dd/MM/yyyy HH:mm") : "No definido")
                             </td>
                             <td class="text-center">
-                                <form asp-action="Eliminar" asp-controller="Cita" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');">
+                                <form asp-action="Eliminar" asp-controller="Cita" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');" class="d-inline">
                                     <input type="hidden" name="consecutivo" value="@item.Consecutivo" />
-                                    <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
                                 </form>
                             </td>
                         </tr>

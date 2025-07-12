@@ -1,208 +1,224 @@
 ﻿<!doctype html>
 <html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clinica Dental</title>
-    <link rel="stylesheet" href="~/css/simplebar.css" />
-    <link rel="stylesheet" href="~/css/styles.css" />
-</head>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Clinica Dental</title>
+        <link rel="stylesheet" href="~/css/simplebar.css" />
+        <link rel="stylesheet" href="~/css/styles.css" />
+    </head>
 
 
-<body>
-    @{
-        var nombreUsuario = "";
-        if (Context.Session.GetString("Nombre").ToString() != null)
-        {
-            nombreUsuario = Context.Session.GetString("Nombre").ToString();
+    <body>
+        @{
+            var nombreUsuario = "";
+            if (Context.Session.GetString("Nombre").ToString() != null)
+            {
+                nombreUsuario = Context.Session.GetString("Nombre").ToString();
+            }
+
+
+
         }
-
-
-
-    }
   
-        <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
-             data-sidebar-position="fixed" data-header-position="fixed">
+            <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+                 data-sidebar-position="fixed" data-header-position="fixed">
 
-            <aside class="left-sidebar">
-                <div>
-                    <div class="brand-logo d-flex align-items-center justify-content-between">
-                        <a asp-controller="Home" asp-action="Index" class="text-nowrap logo-img">
-                            <img src="~/css/images/logo.png" alt="" />
-                        </a>
-                        <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
-                            <i class="ti ti-x fs-8"></i>
-                        </div>
-                    </div>
-                    <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-                        <ul id="sidebarnav">
-                            <li class="nav-small-cap">
-                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                                <span class="hide-menu">Principal</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Home" asp-action="Index" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Inicio</span>
-                                </a>
-                            </li>
-                            <li class="nav-small-cap">
-                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                                <span class="hide-menu">Horarios</span>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Horario" asp-action="CrearHorario" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="mdi:calendar" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Crear Horario</span>
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Horario" asp-action="VerHorario" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="mdi:view-list" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Ver Horario</span>
-                                </a>
-                            </li>
-                            <li class="nav-small-cap">
-                                <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
-                                <span class="hide-menu">Citas</span>
-                            </li>
-                        @{
-                            var tieneCitaStr = Context.Session.GetString("TieneCita") ?? "false";
-                            bool tieneCita = bool.TryParse(tieneCitaStr, out var valor) ? valor : false;
-                        }
-
-                        @if (!tieneCita) // Mostrar solo si NO tiene cita
-                        {
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Agendar Cita</span>
-                                </a>
-                            </li>
-                        }else{
-                            <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Cita" asp-action="CitaAgendada" aria-expanded="false">
-                                    <span>
-                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
-                                    </span>
-                                    <span class="hide-menu">Agendar Cita</span>
-                                </a>
-                            </li>
-                        }
-
-                        <li class="sidebar-item">
-                            <a class="sidebar-link" asp-controller="Cita" asp-action="MisCitas" aria-expanded="false">
-                                <span>
-                                    <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
-                                </span>
-                                <span class="hide-menu">Mis Citas</span>
+                <aside class="left-sidebar">
+                    <div>
+                        <div class="brand-logo d-flex align-items-center justify-content-between">
+                            <a asp-controller="Home" asp-action="Index" class="text-nowrap logo-img">
+                                <img src="~/css/images/logo.png" alt="" />
                             </a>
-                        </li>
-                        </ul>
-                    </nav>
-                </div>
-            </aside>
+                            <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                                <i class="ti ti-x fs-8"></i>
+                            </div>
+                        </div>
+                        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                            <ul id="sidebarnav">
+                                <li class="nav-small-cap">
+                                    <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                    <span class="hide-menu">Principal</span>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Home" asp-action="Index" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="solar:home-smile-bold-duotone" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Inicio</span>
+                                    </a>
+                                </li>
 
-            <div class="body-wrapper">
-                <header class="app-header">
-                    <nav class="navbar navbar-expand-lg navbar-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item d-block d-xl-none">
-                                <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
-                                    <i class="ti ti-menu-2"></i>
+
+
+
+                            @{
+                                var idRol = Context.Session.GetString("IdRol");
+                            }
+
+                            @if (idRol == "1")
+                            {
+                                <li class="nav-small-cap">
+                                    <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                    <span class="hide-menu">Horarios</span>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Horario" asp-action="CrearHorario" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="mdi:calendar" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Crear Horario</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Horario" asp-action="VerHorario" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="mdi:view-list" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Ver Horario</span>
+                                    </a>
+                                </li>
+                            }
+
+                        
+                            
+                                <li class="nav-small-cap">
+                                    <i class="ti ti-dots nav-small-cap-icon fs-6"></i>
+                                    <span class="hide-menu">Citas</span>
+                                </li>
+                            @{
+                                var tieneCitaStr = Context.Session.GetString("TieneCita") ?? "false";
+                                bool tieneCita = bool.TryParse(tieneCitaStr, out var valor) ? valor : false;
+                            }
+
+                            @if (!tieneCita)
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Agendar Cita</span>
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Cita" asp-action="CitaAgendada" aria-expanded="false">
+                                        <span>
+                                            <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Agendar Cita</span>
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="sidebar-item">
+                                <a class="sidebar-link" asp-controller="Cita" asp-action="MisCitas" aria-expanded="false">
+                                    <span>
+                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                    </span>
+                                    <span class="hide-menu">Mis Citas</span>
                                 </a>
                             </li>
-                        </ul>
+                            </ul>
+                        </nav>
+                    </div>
+                </aside>
 
-                        <!-- MENÚ DE NAVEGACIÓN -->
-                        <!-- CONTACTO (centrado con Bootstrap) -->
-                        <div class="w-100 d-flex justify-content-center bg-light py-2">
-                            <div class="d-flex flex-wrap justify-content-center gap-5">
-                                <!-- Teléfono -->
-                                <div class="d-flex align-items-center">
-                                    <iconify-icon icon="ic:baseline-call" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
-                                    <div>
-                                        <small class="text-muted d-block">Central Telefónica</small>
-                                        <strong>+506 2222–2222</strong>
+                <div class="body-wrapper">
+                    <header class="app-header">
+                        <nav class="navbar navbar-expand-lg navbar-light">
+                            <ul class="navbar-nav">
+                                <li class="nav-item d-block d-xl-none">
+                                    <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse" href="javascript:void(0)">
+                                        <i class="ti ti-menu-2"></i>
+                                    </a>
+                                </li>
+                            </ul>
+
+                            <!-- MENÚ DE NAVEGACIÓN -->
+                            <!-- CONTACTO (centrado con Bootstrap) -->
+                            <div class="w-100 d-flex justify-content-center bg-light py-2">
+                                <div class="d-flex flex-wrap justify-content-center gap-5">
+                                    <!-- Teléfono -->
+                                    <div class="d-flex align-items-center">
+                                        <iconify-icon icon="ic:baseline-call" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                        <div>
+                                            <small class="text-muted d-block">Central Telefónica</small>
+                                            <strong>+506 2222–2222</strong>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- WhatsApp -->
-                                <div class="d-flex align-items-center">
-                                    <iconify-icon icon="ic:baseline-whatsapp" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
-                                    <div>
-                                        <small class="text-muted d-block">WhatsApp</small>
-                                        <strong>+506 8888-8888</strong>
+                                    <!-- WhatsApp -->
+                                    <div class="d-flex align-items-center">
+                                        <iconify-icon icon="ic:baseline-whatsapp" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                        <div>
+                                            <small class="text-muted d-block">WhatsApp</small>
+                                            <strong>+506 8888-8888</strong>
+                                        </div>
                                     </div>
-                                </div>
 
-                                <!-- Correo -->
-                                <div class="d-flex align-items-center">
-                                    <iconify-icon icon="ic:baseline-email" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
-                                    <div>
-                                        <small class="text-muted d-block">Escríbanos</small>
-                                        <strong>info@clinicadental.com</strong>
+                                    <!-- Correo -->
+                                    <div class="d-flex align-items-center">
+                                        <iconify-icon icon="ic:baseline-email" width="32" height="32" style="color: var(--verde-claro);" class="me-2"></iconify-icon>
+                                        <div>
+                                            <small class="text-muted d-block">Escríbanos</small>
+                                            <strong>info@clinicadental.com</strong>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- PERFIL DE USUARIO -->
-                        <ul class="navbar-nav flex-row align-items-center">
-                            <li class="nav-item dropdown">
-                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                <img src="~/css/images/user-1.jpg" alt="" width="35" height="35" class="rounded-circle me-3">
-                                    <span style="font-size: 0.9rem; white-space: nowrap; color: #343a40; font-weight: 500;">@nombreUsuario</span>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
-                                    <div class="message-body">
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-user fs-6"></i>
-                                            <p class="mb-0 fs-3">Ver Perfil</p>
-                                        </a>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-mail fs-6"></i>
-                                            <p class="mb-0 fs-3">Cambiar contraseña</p>
-                                        </a>
-                                        <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
-                                            <i class="ti ti-list-check fs-6"></i>
-                                            <p class="mb-0 fs-3">Editar Perfil</p>
-                                        </a>
-                                    <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
+                            <!-- PERFIL DE USUARIO -->
+                            <ul class="navbar-nav flex-row align-items-center">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                                       aria-expanded="false">
+                                    <img src="~/css/images/user-1.jpg" alt="" width="35" height="35" class="rounded-circle me-3">
+                                        <span style="font-size: 0.9rem; white-space: nowrap; color: #343a40; font-weight: 500;">@nombreUsuario</span>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
+                                        <div class="message-body">
+                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                                <i class="ti ti-user fs-6"></i>
+                                                <p class="mb-0 fs-3">Ver Perfil</p>
+                                            </a>
+                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                                <i class="ti ti-mail fs-6"></i>
+                                                <p class="mb-0 fs-3">Cambiar contraseña</p>
+                                            </a>
+                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                                <i class="ti ti-list-check fs-6"></i>
+                                                <p class="mb-0 fs-3">Editar Perfil</p>
+                                            </a>
+                                        <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </nav>
-                </header>
+                                </li>
+                            </ul>
+                        </nav>
+                    </header>
 
                 
-                    <div class="py-6 px-6 text-center">
-                        @RenderBody()
-                        <footer class="footer text-center">
+                        <div class="py-6 px-6 text-center">
+                            @RenderBody()
+                            <footer class="footer text-center">
                             
-                        </footer>
+                            </footer>
+                        </div>
                     </div>
-                </div>
 
-                <script src="~/lib/jquery.min.js"></script>
-                <script src="~/lib/bootstrap.bundle.min.js"></script>
-                <script src="~/lib/simplebar.js"></script>
-                <script src="~/lib/sidebarmenu.js"></script>
-                <script src="~/lib/app.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+                    <script src="~/lib/jquery.min.js"></script>
+                    <script src="~/lib/bootstrap.bundle.min.js"></script>
+                    <script src="~/lib/simplebar.js"></script>
+                    <script src="~/lib/sidebarmenu.js"></script>
+                    <script src="~/lib/app.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
             </div>
-        </div>
+        
     </body>
 
 

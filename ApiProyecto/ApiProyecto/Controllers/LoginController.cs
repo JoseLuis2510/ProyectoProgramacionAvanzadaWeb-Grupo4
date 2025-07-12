@@ -61,8 +61,9 @@ namespace ApiProyecto.Controllers
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
             {
                 var Estado = true;
-                
-                
+                var IdRol = 2;
+
+
 
                 var resultado = context.Execute("RegistrarUsuario",
                     new
@@ -71,7 +72,8 @@ namespace ApiProyecto.Controllers
                         autenticacion.Correo,
                         autenticacion.Identificacion,
                         autenticacion.Contrasenna,
-                        Estado
+                        Estado,
+                        IdRol
                     }
                     );
                 if(resultado > 0)

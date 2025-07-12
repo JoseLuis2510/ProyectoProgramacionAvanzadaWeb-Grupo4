@@ -77,6 +77,41 @@ namespace ApiProyecto.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObtenerTodas")]
+        [Authorize]
+        public ActionResult ObtenerTodas()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(new RespuestaPredeterminada
+                {
+                    Codigo = 401,
+                    Mensaje = "Token no válido o sin IdUsuario"
+                });
+
+            if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
+                return Unauthorized(new RespuestaPredeterminada
+                {
+                    Codigo = 401,
+                    Mensaje = "IdUsuario inválido en token"
+                });
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var citas = context.Query<Cita>(
+                    "ObtenerTodasLasCitas",  
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                return Ok(_utilitarios.RespuestaCorrecta(citas));
+            }
+        }
+
+
+
+
+
         [HttpPost]
         [Route("Eliminar")]
         [Authorize] 
@@ -104,7 +139,7 @@ namespace ApiProyecto.Controllers
                 else
                         return NotFound(_utilitarios.RespuestaIncorrecta("\"No se encontró la cita con ese consecutivo para este usuario"));
 
-            }
+                }
 
         }
 
