@@ -45,7 +45,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 }
                 else
                 {
-                    // Aquí manejas errores como 404 o 500
+                    
                     ViewBag.IdHorario = new List<SelectListItem>();
                     ViewBag.Mensaje = "No se encontraron horarios disponibles.";
                 }
@@ -100,7 +100,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 return Unauthorized("No se encontró token JWT en sesión.");
             }
 
-            // Agregar token en header Authorization
+    
             http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
             var resultado = http.GetAsync("api/Cita/MisCitas").Result;
@@ -132,7 +132,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 return Unauthorized("No se encontró token JWT en sesión.");
             }
 
-            // Agregar token en header Authorization
+            
             http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
 
 
@@ -183,17 +183,18 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
             {new KeyValuePair<string, string>("consecutivo", consecutivo.ToString())});
 
             
-            var response = http.PostAsync("api/Cita/Eliminar", content).Result;
+            var resultado = http.PostAsync("api/Cita/Eliminar", content).Result;
 
-            if (response.IsSuccessStatusCode)
+            if (resultado.IsSuccessStatusCode)
             {
-                //HttpContext.Session.SetString("TieneCita", "false");
+                HttpContext.Session.SetString("TieneCita", "false");
                 return RedirectToAction("Index", "Home");
             }
             else
             {
-                HttpContext.Session.SetString("TieneCita", "false");
-                ModelState.AddModelError(string.Empty, "No se pudo eliminar la cita.");
+                
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
                 return RedirectToAction("MisCitas", "Cita");
             }
         }

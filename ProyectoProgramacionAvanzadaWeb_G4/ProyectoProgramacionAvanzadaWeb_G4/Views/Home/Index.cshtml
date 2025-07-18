@@ -4,7 +4,18 @@
         <br>
         <h1 class="display-4 fw-bold">Clinica Dental </h1>
         <p class="lead mt-3">Expertos en salud y estética dental en Costa Rica.</p>
-        <a asp-controller="Cita" asp-action="CrearCita" class="btn text-white" style="background-color: #638DFF;">Programe su cita</a>
+        @{
+            var tieneCitaStr = Context.Session.GetString("TieneCita") ?? "false";
+            bool tieneCita = bool.TryParse(tieneCitaStr, out var valor) ? valor : false;
+        }
+         @if (!tieneCita){
+            <a asp-controller="Cita" asp-action="CrearCita" class="btn text-white" style="background-color: #638DFF;">Programe su cita</a>
+         }
+        else{
+            <a asp-controller="Cita" asp-action="CitaAgendada" class="btn text-white" style="background-color: #638DFF;">Programe su cita</a>
+        }
+                           
+        
        
 
         <!-- Galería de imágenes -->
