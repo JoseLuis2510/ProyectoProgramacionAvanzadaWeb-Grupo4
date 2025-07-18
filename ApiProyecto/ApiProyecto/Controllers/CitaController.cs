@@ -32,7 +32,7 @@ namespace ApiProyecto.Controllers
         {
             var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
             if (idUsuarioClaim == null)
-                return Unauthorized("Token no válido o sin IdUsuario");
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
             long IdUsuario = long.Parse(idUsuarioClaim.Value);
 
@@ -61,7 +61,7 @@ namespace ApiProyecto.Controllers
         {
             var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
             if (idUsuarioClaim == null)
-                return Unauthorized("Token no válido o sin IdUsuario");
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
             long IdUsuario = long.Parse(idUsuarioClaim.Value);
 
@@ -84,18 +84,11 @@ namespace ApiProyecto.Controllers
         {
             var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
             if (idUsuarioClaim == null)
-                return Unauthorized(new RespuestaPredeterminada
-                {
-                    Codigo = 401,
-                    Mensaje = "Token no válido o sin IdUsuario"
-                });
+
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
             if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
-                return Unauthorized(new RespuestaPredeterminada
-                {
-                    Codigo = 401,
-                    Mensaje = "IdUsuario inválido en token"
-                });
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
             {
@@ -120,9 +113,9 @@ namespace ApiProyecto.Controllers
 
                 var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
                 if (idUsuarioClaim == null)
-                    return Unauthorized("Token no válido o sin IdUsuario");
+                    return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
-                long IdUsuario = long.Parse(idUsuarioClaim.Value);
+            long IdUsuario = long.Parse(idUsuarioClaim.Value);
 
                 using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
                 {
@@ -137,7 +130,7 @@ namespace ApiProyecto.Controllers
                     if (resultado > 0)
                     return Ok(_utilitarios.RespuestaCorrecta(null));
                 else
-                        return NotFound(_utilitarios.RespuestaIncorrecta("\"No se encontró la cita con ese consecutivo para este usuario"));
+                        return NotFound(_utilitarios.RespuestaIncorrecta("No se encontró la cita con ese consecutivo para este usuario"));
 
                 }
 
