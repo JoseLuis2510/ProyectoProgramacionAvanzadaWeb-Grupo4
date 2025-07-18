@@ -83,6 +83,7 @@
                                         <span class="hide-menu">Ver Horario</span>
                                     </a>
                                 </li>
+                            
                             }
 
                         
@@ -96,37 +97,54 @@
                                 bool tieneCita = bool.TryParse(tieneCitaStr, out var valor) ? valor : false;
                             }
 
-                            @if (!tieneCita)
-                            {
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
-                                        <span>
-                                            <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
-                                        </span>
-                                        <span class="hide-menu">Agendar Cita</span>
-                                    </a>
-                                </li>
-                            }
-                            else
-                            {
-                                <li class="sidebar-item">
-                                    <a class="sidebar-link" asp-controller="Cita" asp-action="CitaAgendada" aria-expanded="false">
-                                        <span>
-                                            <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
-                                        </span>
-                                        <span class="hide-menu">Agendar Cita</span>
-                                    </a>
-                                </li>
-                            }
+                            @if (idRol == "2"){
+                                @if (!tieneCita)
+                                {
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link" asp-controller="Cita" asp-action="CrearCita" aria-expanded="false">
+                                            <span>
+                                                <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                            </span>
+                                            <span class="hide-menu">Agendar Cita</span>
+                                        </a>
+                                    </li>
+                                }
+                                else
+                                {
+                                    <li class="sidebar-item">
+                                        <a class="sidebar-link" asp-controller="Cita" asp-action="CitaAgendada" aria-expanded="false">
+                                            <span>
+                                                <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                            </span>
+                                            <span class="hide-menu">Agendar Cita</span>
+                                        </a>
+                                    </li>
+                                }
 
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link" asp-controller="Cita" asp-action="MisCitas" aria-expanded="false">
+                                        <span>
+                                        <iconify-icon icon="mdi:view-list" class="fs-6"></iconify-icon>
+                                        </span>
+                                        <span class="hide-menu">Mis Citas</span>
+                                    </a>
+                                </li>
+
+                            }
+                           
+                            @if (idRol == "1"){
                             <li class="sidebar-item">
-                                <a class="sidebar-link" asp-controller="Cita" asp-action="MisCitas" aria-expanded="false">
+                                <a class="sidebar-link" asp-controller="Cita" asp-action="ObtenerCitasTotales" aria-expanded="false">
                                     <span>
-                                        <iconify-icon icon="mdi:calendar-plus" class="fs-6"></iconify-icon>
+                                        <iconify-icon icon="mdi:view-list" class="fs-6"></iconify-icon>
                                     </span>
-                                    <span class="hide-menu">Mis Citas</span>
+                                    <span class="hide-menu">Ver Citas Agendas</span>
                                 </a>
                             </li>
+
+                            }
+                            
+                            
                             </ul>
                         </nav>
                     </div>
@@ -194,10 +212,7 @@
                                                 <i class="ti ti-mail fs-6"></i>
                                                 <p class="mb-0 fs-3">Cambiar contraseña</p>
                                             </a>
-                                            <a class="d-flex align-items-center gap-2 dropdown-item">
-                                                <i class="ti ti-list-check fs-6"></i>
-                                                <p class="mb-0 fs-3">Editar Perfil</p>
-                                            </a>
+                                            
                                         <a href="@Url.Action("CerrarSesion","Login")" class="btn btn-outline-primary mx-3 mt-2 d-block">Cerrar Sesión</a>
                                         </div>
                                     </div>

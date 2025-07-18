@@ -165,3 +165,86 @@ $(document).ready(function () {
         });
     });
 });
+
+$(document).ready(function () {
+    $("#EliminarHorarioform").submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: '¿Deseas eliminar el horario?',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var form = $(this);
+
+                $.ajax({
+                    type: form.attr('method') || 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Horario Eliminado!',
+                            text: 'La información fue eliminada correctamente.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = "/Horario/VerHorario";
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema al eliminar el horario.'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});
+
+
+$(document).ready(function () {
+    $("#AtenderCitaform").submit(function (e) {
+        e.preventDefault();
+
+        Swal.fire({
+            title: '¿Deseas atender al paciente?',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, atender',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                var form = $(this);
+
+                $.ajax({
+                    type: form.attr('method') || 'POST',
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Paciente Atendido!',
+                            text: 'La información fue procesada correctamente.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => {
+                            window.location.href = "/Cita/ObtenerCitasTotales";
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: 'Ocurrió un problema al procesar la información.'
+                        });
+                    }
+                });
+            }
+        });
+    });
+});

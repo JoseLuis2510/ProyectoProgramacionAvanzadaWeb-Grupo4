@@ -1,12 +1,10 @@
 ﻿@model List<ProyectoProgramacionAvanzadaWeb_G4.Models.Cita>
-
-
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
 
 <div class="text-center mt-4">
-    <h3>Mis Citas Agendadas</h3>
+    <h3>Citas Agendadas</h3>
 </div>
 
 <div class="d-flex justify-content-center mt-4">
@@ -14,9 +12,11 @@
         <table id="tablas" class="table table-striped table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
+                    <th scope="col">Nombre</th>
                     <th scope="col">Descripción</th>
                     <th scope="col">Fecha y Hora</th>
                     <th scope="col">Acciones</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -25,18 +25,20 @@
                     foreach (var item in Model)
                     {
                         <tr>
+                            <td class="text-break">@item.Nombre</td>
                             <td class="text-break">@item.Descripcion</td>
                             <td class="text-center">
                                 @(item.HoraFecha > DateTime.MinValue ? item.HoraFecha.ToString("dd/MM/yyyy HH:mm") : "No definido")
                             </td>
                             <td class="text-center">
-                                <form asp-action="Eliminar" asp-controller="Cita" method="post" id="EliminarCitaform" class="d-inline">
+                                <form asp-action="AtenderCita" asp-controller="Cita" method="post" id="AtenderCitaform" class="d-inline">
                                     <input type="hidden" name="consecutivo" value="@item.Consecutivo" />
-                                    <button type="submit" class="btn btn-danger btn-sm">
-                                        <i class="bi bi-trash"></i> Eliminar
+                                    <button type="submit" class="btn btn-success btn-sm">
+                                        <i class="bi bi-trash"></i> Atender
                                     </button>
                                 </form>
                             </td>
+
                         </tr>
                     }
                 }
@@ -44,7 +46,4 @@
         </table>
     </div>
 </div>
-
 <script src="~/js/DataTable.js"></script>
-
- 

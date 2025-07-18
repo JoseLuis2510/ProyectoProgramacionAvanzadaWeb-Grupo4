@@ -65,5 +65,45 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public IActionResult EliminarHorario(long idHorario)
+        {
+            Console.WriteLine($"IdHorario recibido en Web: {idHorario}");
+
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+            var content = new FormUrlEncodedContent(new[]
+            {new KeyValuePair<string, string>("idHorario", idHorario.ToString())});
+
+
+            var resultado = http.PostAsync("api/Horario/EliminarHorario", content).Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return RedirectToAction("VerHorario", "Horario");
+            }
+        }
     }
 }
+

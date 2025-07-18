@@ -198,6 +198,80 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 return RedirectToAction("MisCitas", "Cita");
             }
         }
+
+        [HttpGet]
+        public IActionResult ObtenerCitasTotales()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+
+            http.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+
+            var resultado = http.GetAsync("api/Cita/ObtenerCitasPacientes").Result; 
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<List<Cita>>>().Result;
+                return View(contenido.Contenido);
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return View(new List<Cita>());
+            }
+        }
+
+        [HttpPost]
+        public IActionResult AtenderCita(long consecutivo)
+        {
+            Console.WriteLine($"Consecutivo recibido en Web: {consecutivo}");
+
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+
+            var content = new FormUrlEncodedContent(new[]
+            {new KeyValuePair<string, string>("consecutivo", consecutivo.ToString())});
+
+
+            var resultado = http.PostAsync("api/Cita/AtenderCita", content).Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                HttpContext.Session.SetString("TieneCita", "false");
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                return RedirectToAction("MisCitas", "Cita");
+            }
+        }
+
+
     }
 
 

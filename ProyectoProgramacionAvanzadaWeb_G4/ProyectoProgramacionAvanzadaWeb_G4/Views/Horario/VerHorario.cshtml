@@ -14,6 +14,7 @@
                 <tr>
                     <th>Fecha y Hora</th>
                     <th>Observación</th>
+                    <th scope="col">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -24,14 +25,16 @@
                         <tr>
                             <td class="text-center">@item.HoraFecha.ToString("dd/MM/yyyy HH:mm")</td>
                             <td>@item.Observacion</td>
+                            <td class="text-center">
+                                <form asp-action="EliminarHorario" asp-controller="Horario" method="post" id="EliminarHorarioform" class="d-inline">
+                                    <input type="hidden" name="idHorario" value="@item.IdHorario" />
+                                    <button type="submit" class="btn btn-danger btn-sm">
+                                        <i class="bi bi-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
                     }
-                }
-                else
-                {
-                    <tr>
-                        <td colspan="2" class="text-center text-muted">No hay horarios registrados.</td>
-                    </tr>
                 }
             </tbody>
         </table>

@@ -2,6 +2,7 @@
 using ApiProyecto.Models;
 using ApiProyecto.Services;
 using Dapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 
@@ -61,6 +62,36 @@ namespace ApiProyecto.Controllers
                 else
                     return NotFound("No hay horarios");
             }
+        }
+
+        [HttpPost]
+        [Route("EliminarHorario")]
+        [Authorize]
+        public IActionResult EliminarHorario([FromForm] long idHorario)
+        {
+
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            long IdUsuario = long.Parse(idUsuarioClaim.Value);
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var resultado = context.Execute("EliminarHorario",
+                    new
+                    {
+                        idHorario
+                    },
+                    commandType: CommandType.StoredProcedure);
+
+                if (resultado > 0)
+                    return Ok(_utilitarios.RespuestaCorrecta(null));
+                else
+                    return NotFound(_utilitarios.RespuestaIncorrecta("No se encontró horario"));
+
+            }
+
         }
 
     }
