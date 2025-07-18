@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace ProyectoProgramacionAvanzadaWeb_G4.Services
@@ -33,6 +34,20 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Services
             }
 
             return Convert.ToBase64String(array);
+        }
+
+        public long ObtenerIdUsuario(IEnumerable<Claim> token)
+        {
+            if (token.Any())
+            {
+                var idUsuarioClaim = token.FirstOrDefault(c => c.Type == "IdUsuario");
+                if (idUsuarioClaim != null && long.TryParse(idUsuarioClaim.Value, out long idUsuario))
+                {
+                    return idUsuario;
+                }
+            }
+
+            return 0;
         }
 
     }

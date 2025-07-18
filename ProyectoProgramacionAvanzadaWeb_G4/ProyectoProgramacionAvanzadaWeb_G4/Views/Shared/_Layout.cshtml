@@ -7,10 +7,14 @@
         <title>Clinica Dental</title>
         <link rel="stylesheet" href="~/css/simplebar.css" />
         <link rel="stylesheet" href="~/css/styles.css" />
-    </head>
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 
+
+    </head>
+        
 
     <body>
+ 
         @{
             var nombreUsuario = "";
             if (Context.Session.GetString("Nombre").ToString() != null)
@@ -175,22 +179,22 @@
                             <!-- PERFIL DE USUARIO -->
                             <ul class="navbar-nav flex-row align-items-center">
                                 <li class="nav-item dropdown">
-                                    <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2" data-bs-toggle="dropdown"
+                                    <a class="nav-link nav-icon-hover" id="drop2" data-bs-toggle="dropdown"
                                        aria-expanded="false">
                                     <img src="~/css/images/user-1.jpg" alt="" width="35" height="35" class="rounded-circle me-3">
                                         <span style="font-size: 0.9rem; white-space: nowrap; color: #343a40; font-weight: 500;">@nombreUsuario</span>
                                     </a>
                                     <div class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up" aria-labelledby="drop2">
                                         <div class="message-body">
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <a href="@Url.Action("VerPerfil", "Usuario")" class="d-flex align-items-center gap-2 dropdown-item">
                                                 <i class="ti ti-user fs-6"></i>
-                                                <p class="mb-0 fs-3">Ver Perfil</p>
+                                                <span class="mb-0 fs-3">Ver Perfil</span>
                                             </a>
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <a class="d-flex align-items-center gap-2 dropdown-item">
                                                 <i class="ti ti-mail fs-6"></i>
                                                 <p class="mb-0 fs-3">Cambiar contraseña</p>
                                             </a>
-                                            <a href="javascript:void(0)" class="d-flex align-items-center gap-2 dropdown-item">
+                                            <a class="d-flex align-items-center gap-2 dropdown-item">
                                                 <i class="ti ti-list-check fs-6"></i>
                                                 <p class="mb-0 fs-3">Editar Perfil</p>
                                             </a>
@@ -202,9 +206,13 @@
                         </nav>
                     </header>
 
-                
+                        <br>
+                        <br>
+                        <br>
                         <div class="py-6 px-6 text-center">
                             @RenderBody()
+                                
+
                             <footer class="footer text-center">
                             
                             </footer>
@@ -217,8 +225,13 @@
                     <script src="~/lib/sidebarmenu.js"></script>
                     <script src="~/lib/app.min.js"></script>
                     <script src="https://cdn.jsdelivr.net/npm/iconify-icon@1.0.8/dist/iconify-icon.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+                    <script src="~/js/SweetAlert.js"></script>
+
+                    
+
+
             </div>
-        
     </body>
 
 

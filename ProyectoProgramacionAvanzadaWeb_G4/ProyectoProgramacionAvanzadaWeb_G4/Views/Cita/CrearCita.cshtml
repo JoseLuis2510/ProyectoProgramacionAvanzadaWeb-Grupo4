@@ -11,7 +11,7 @@
                     <h4 class="mb-0">Agende su cita </h4>
                 </div>
                 <div class="card-body p-4">
-                    <form asp-controller="Cita" asp-action="CrearCita" method="post">
+                    <form asp-controller="Cita" asp-action="CrearCita" id="Citaform" method="post">
                         @if (ViewBag.Mensaje != null)
                         {
                             <div class="alert alert-info" role="alert">

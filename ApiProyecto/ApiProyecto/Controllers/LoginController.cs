@@ -68,9 +68,9 @@ namespace ApiProyecto.Controllers
                 var resultado = context.Execute("RegistrarUsuario",
                     new
                     {
+                        autenticacion.Identificacion,
                         autenticacion.Nombre,
                         autenticacion.Correo,
-                        autenticacion.Identificacion,
                         autenticacion.Contrasenna,
                         Estado,
                         IdRol

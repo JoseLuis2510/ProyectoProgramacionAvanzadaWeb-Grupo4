@@ -1,0 +1,57 @@
+﻿@model Autenticacion
+@{
+    Layout = "_Layout";
+}
+
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h4 class="card-title text-center">Información Personal</h4>
+            </div>
+            <hr>
+
+            <form class="form-horizontal" id="Actualizarform" asp-controller="Usuario" asp-action="ActualizarPerfil">
+                <div class="card-body">
+                    <div class="form-group row mb-3">
+                        <label for="fullname" class="col-sm-4 col-form-label text-end">Identificación</label>
+                        <div class="col-sm-8">
+                            <input type="text" asp-for="Identificacion" id="Identificacion"class="form-control"
+                             onkeyup="ConsultarNombreAPI()" required>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <label for="title1" class="col-sm-4 col-form-label text-end">Nombre Completo</label>
+                        <div class="col-sm-8">
+                            <input type="text" asp-for="Nombre" id="Nombre" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <label for="com12" class="col-sm-4 col-form-label text-end">Correo Electrónico</label>
+                        <div class="col-sm-8">
+                            <input type="email" asp-for="Correo" id="Correo" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group row mb-3">
+                        <label for="com12" class="col-sm-4 col-form-label text-end">Rol Usuario</label>
+                        <div class="col-sm-8">
+                            <input type="text" asp-for="Descripcion" readonly="readonly" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="card-body text-end">
+                    <button id="btnProcesar" class="btn" type="submit" style="background-color: #6C82FF; color: white;">
+                        Procesar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/lib/jquery.min.js"></script>
+<script src="~/js/Cedulas.js"></script>
+
+

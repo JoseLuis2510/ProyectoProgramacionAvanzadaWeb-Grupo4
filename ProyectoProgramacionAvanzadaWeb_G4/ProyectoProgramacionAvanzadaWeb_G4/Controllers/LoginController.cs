@@ -45,6 +45,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                     var datos = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<Autenticacion>>().Result;
                     HttpContext.Session.SetString("Nombre", datos?.Contenido?.Nombre!);
                     HttpContext.Session.SetString("IdUsuario", datos?.Contenido?.IdUsuario.ToString());
+                    HttpContext.Session.SetString("NombreRol", datos?.Contenido?.Descripcion);
                     HttpContext.Session.SetString("IdRol", datos?.Contenido?.IdRol.ToString());
                     HttpContext.Session.SetString("JWT", datos?.Contenido?.Token!);
                     HttpContext.Session.SetString("TieneCita", datos?.Contenido?.TieneCita.ToString());

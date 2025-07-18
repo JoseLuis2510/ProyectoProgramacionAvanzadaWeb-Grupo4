@@ -1,12 +1,17 @@
 ﻿@model List<ProyectoProgramacionAvanzadaWeb_G4.Models.Cita>
 
-<div class="container mt-4">
-    <br>
-    <br>
-    <h4 class="mb-3 text-primary text-center">Lista de Citas Agendadas</h4>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered align-middle">
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<div class="text-center mt-4">
+    <h3>Mis Citas Agendadas</h3>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <div class="table-responsive" style="max-width: 700px; width: 100%;">
+        <table id="tablas" class="table table-striped table-hover table-bordered">
             <thead class="table-primary text-center">
                 <tr>
                     <th scope="col">Descripción</th>
@@ -25,7 +30,7 @@
                                 @(item.HoraFecha > DateTime.MinValue ? item.HoraFecha.ToString("dd/MM/yyyy HH:mm") : "No definido")
                             </td>
                             <td class="text-center">
-                                <form asp-action="Eliminar" asp-controller="Cita" method="post" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta cita?');" class="d-inline">
+                                <form asp-action="Eliminar" asp-controller="Cita" method="post" id="EliminarCitaform" class="d-inline">
                                     <input type="hidden" name="consecutivo" value="@item.Consecutivo" />
                                     <button type="submit" class="btn btn-danger btn-sm">
                                         <i class="bi bi-trash"></i> Eliminar
@@ -45,3 +50,7 @@
         </table>
     </div>
 </div>
+
+<script src="~/js/DataTable.js"></script>
+
+ 
