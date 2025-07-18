@@ -34,5 +34,6 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Services
 
             return Convert.ToBase64String(array);
         }
+
     }
 }

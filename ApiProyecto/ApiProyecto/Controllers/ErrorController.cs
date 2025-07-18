@@ -28,7 +28,7 @@ namespace ApiProyecto.Controllers
 
             var DescripcionError = ex!.Error.Message;
             var Origen = ex.Path;
-            var IdUsuario = 0;
+            var IdUsuario = _utilitarios.ObtenerIdUsuario(User.Claims);
 
             using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
             {

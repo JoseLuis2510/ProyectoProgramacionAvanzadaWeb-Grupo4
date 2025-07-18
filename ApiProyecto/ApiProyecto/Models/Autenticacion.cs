@@ -11,6 +11,8 @@
 
         public long IdRol { get; set; }
 
+        public string? Descripcion { get; set; }
+
         public string? Token { get; set; }
 
         public bool TieneCita { get; set; }

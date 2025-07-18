@@ -1,4 +1,5 @@
-﻿using ApiProyecto.Models;
+﻿using System.Security.Claims;
+using ApiProyecto.Models;
 
 namespace ApiProyecto.Services
 {
@@ -16,5 +17,7 @@ namespace ApiProyecto.Services
         string Encrypt(string texto);
 
         string GenerarToken(long IdUsuario);
+
+        long ObtenerIdUsuario(IEnumerable<Claim> token);
     }
 }

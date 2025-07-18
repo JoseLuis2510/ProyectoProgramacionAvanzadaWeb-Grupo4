@@ -10,6 +10,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 {
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public class LoginController : Controller
     {
         private readonly IConfiguration _configuration;
@@ -112,7 +113,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 }
             }
         }
-
+        [Sesiones]
         [HttpGet]
         public IActionResult CerrarSesion()
         {
