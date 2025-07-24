@@ -1,0 +1,8 @@
+Usuario con rol de doctor:
+correo: josejb425@gmail.com
+contraseña: 1234
+
+
+Usuario con rol de paciente
+correo:alex@gmail.com
+contraseña:1234
