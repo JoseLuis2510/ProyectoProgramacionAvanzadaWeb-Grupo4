@@ -69,5 +69,44 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 }
             }
         }
+
+        [HttpGet]
+        public IActionResult CambiarContrasenna()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CambiarContrasenna(Autenticacion autenticacion)
+        {
+            if (autenticacion.Contrasenna != autenticacion.ConfirmarContrasenna)
+            {
+                ViewBag.Mensaje = "Las contraseñas no coinciden.";
+                return View();
+            }
+
+            autenticacion.Contrasenna = _utilitarios.Encrypt(autenticacion.Contrasenna!);
+
+            using (var http = _http.CreateClient())
+            {
+                var IdUsuario = HttpContext.Session.GetString("IdUsuario");
+                autenticacion.IdUsuario = long.Parse(IdUsuario!);
+
+                http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+                http.DefaultRequestHeaders.Add("Authorization", "Bearer " + HttpContext.Session.GetString("JWT"));
+                var resultado = http.PutAsJsonAsync("api/Usuario/CambiarContrasenna", autenticacion).Result;
+
+                if (resultado.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                    ViewBag.Mensaje = respuesta?.Mensaje;
+                    return View();
+                }
+            }
+        }
     }
 }

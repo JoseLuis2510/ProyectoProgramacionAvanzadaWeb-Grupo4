@@ -16,7 +16,6 @@
                     url: form.attr('action'),
                     data: form.serialize(),
                     success: function (response) {
-                        // Aquí suponemos que el servidor responde con un resultado exitoso
                         Swal.fire({
                             icon: 'success',
                             title: '¡Datos actualizados!',
@@ -39,6 +38,8 @@
         });
     });
 });
+
+
 
 
 $(document).ready(function () {
@@ -248,3 +249,5 @@ $(document).ready(function () {
         });
     });
 });
+
+
