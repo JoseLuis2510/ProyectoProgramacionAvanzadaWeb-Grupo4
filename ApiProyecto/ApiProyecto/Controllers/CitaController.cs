@@ -101,8 +101,29 @@ namespace ApiProyecto.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("ObtenerCitasPacientes")]
+        [Authorize]
+        public ActionResult ObtenerCitasPacientes()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
 
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
+            if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var citas = context.Query<Cita>(
+                    "ObtenerTodasLasCitas",
+                    commandType: CommandType.StoredProcedure
+                ).ToList();
+
+                return Ok(_utilitarios.RespuestaCorrecta(citas));
+            }
+        }
 
 
         [HttpPost]
@@ -137,29 +158,7 @@ namespace ApiProyecto.Controllers
         }
 
 
-        [HttpGet]
-        [Route("ObtenerCitasPacientes")]
-        [Authorize]
-        public ActionResult ObtenerCitasPacientes()
-        {
-            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
-            if (idUsuarioClaim == null)
-
-                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
-
-            if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
-                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
-
-            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
-            {
-                var citas = context.Query<Cita>(
-                    "ObtenerTodasLasCitas",
-                    commandType: CommandType.StoredProcedure
-                ).ToList();
-
-                return Ok(_utilitarios.RespuestaCorrecta(citas));
-            }
-        }
+        
         [HttpPost]
         [Route("AtenderCita")]
         [Authorize]
@@ -190,13 +189,38 @@ namespace ApiProyecto.Controllers
 
         }
 
+        [HttpGet]
+        [Route("ObtenerTotalCitas")]
+        [Authorize]
+        public ActionResult ObtenerTotalCitas()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var total = context.ExecuteScalar<int>(
+                    "ObtenerTotalCitasGrafico",
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return Ok(_utilitarios.RespuestaCorrecta(total));
+            }
+        }
+
+
+
 
     }
 
-    
 
 
 
 
-    }
+
+}
 

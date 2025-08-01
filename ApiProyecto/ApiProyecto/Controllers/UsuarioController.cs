@@ -1,4 +1,5 @@
-﻿using ApiProyecto.Models;
+﻿using System.Data;
+using ApiProyecto.Models;
 using ApiProyecto.Services;
 using Dapper;
 using Microsoft.AspNetCore.Authorization;
@@ -82,6 +83,30 @@ namespace ApiProyecto.Controllers
                     return BadRequest(_utilitarios.RespuestaIncorrecta("Su información no fue actualizada"));
             }
         }
+
+        [HttpGet]
+        [Route("ObtenerTotalUsuarios")]
+        [Authorize]
+        public ActionResult ObtenerTotalUsuarios()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            if (!long.TryParse(idUsuarioClaim.Value, out long IdUsuario))
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var total = context.ExecuteScalar<int>(
+                    "ObtenerTotalUsuariosGrafico",  
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return Ok(_utilitarios.RespuestaCorrecta(total));
+            }
+        }
+
 
     }
 }

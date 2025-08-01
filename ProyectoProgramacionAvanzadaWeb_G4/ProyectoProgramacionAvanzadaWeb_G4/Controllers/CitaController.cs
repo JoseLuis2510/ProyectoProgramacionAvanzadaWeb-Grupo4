@@ -270,6 +270,37 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 return RedirectToAction("MisCitas", "Cita");
             }
         }
+        [HttpGet]
+        public IActionResult GraficoCitas()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var resultado = http.GetAsync("api/Cita/ObtenerTotalCitas").Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<int>>().Result;
+                ViewBag.TotalCitas = contenido.Contenido;
+                return View();
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                ViewBag.TotalCitas = 0;
+                return View();
+            }
+        }
 
 
     }

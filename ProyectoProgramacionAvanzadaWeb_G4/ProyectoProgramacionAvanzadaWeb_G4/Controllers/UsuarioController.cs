@@ -108,5 +108,37 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 }
             }
         }
+        [HttpGet]
+        public IActionResult GraficoUsuarios()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+            {
+                return Unauthorized("No se encontró token JWT en sesión.");
+            }
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var resultado = http.GetAsync("api/Usuario/ObtenerTotalUsuarios").Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada<int>>().Result;
+                ViewBag.TotalUsuarios = contenido.Contenido;
+                return View();
+            }
+            else
+            {
+                var respuesta = resultado.Content.ReadFromJsonAsync<RespuestaPredeterminada>().Result;
+                ViewBag.Mensaje = respuesta?.Mensaje;
+                ViewBag.TotalUsuarios = 0;
+                return View();
+            }
+        }
+
     }
 }
