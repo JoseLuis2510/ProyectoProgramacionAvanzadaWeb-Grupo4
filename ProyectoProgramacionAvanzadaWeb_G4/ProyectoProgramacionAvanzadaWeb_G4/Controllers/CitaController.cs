@@ -137,7 +137,7 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
 
 
 
-            var resultado = http.GetAsync("api/Cita/ObtenerTodas").Result; // ajusta la ruta real
+            var resultado = http.GetAsync("api/Cita/ObtenerTodas").Result; 
 
             if (resultado.IsSuccessStatusCode)
             {
@@ -301,6 +301,76 @@ namespace ProyectoProgramacionAvanzadaWeb_G4.Controllers
                 return View();
             }
         }
+
+
+        [HttpGet]
+        public IActionResult MisCitasCalendario()
+        {
+            return View("CalendarioWebUsuario");  
+        }
+
+        [HttpGet]
+        public IActionResult CalendarioWebUsuario()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized();
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var resultado = http.GetAsync("api/Cita/MisCitasCalendario").Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<List<object>>().Result;
+                return Json(contenido);
+            }
+            else
+            {
+                return Json(new List<object>());
+            }
+        }
+
+
+
+        [HttpGet]
+        public IActionResult TodasCitasCalendario()
+        {
+            return View("CalendarioWebAdministrador");  
+        }
+
+        [HttpGet]
+        public IActionResult CalendarioWebAdministrador()
+        {
+            using var http = _http.CreateClient();
+            http.BaseAddress = new Uri(_configuration.GetSection("Start:ApiUrl").Value!);
+
+            var token = HttpContext.Session.GetString("JWT");
+            if (string.IsNullOrEmpty(token))
+                return Unauthorized();
+
+            http.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+
+            var resultado = http.GetAsync("api/Cita/TodasCitasCalendario").Result;
+
+            if (resultado.IsSuccessStatusCode)
+            {
+                var contenido = resultado.Content.ReadFromJsonAsync<List<object>>().Result;
+                return Json(contenido);
+            }
+            else
+            {
+                return Json(new List<object>());
+            }
+        }
+
+
+
 
 
     }

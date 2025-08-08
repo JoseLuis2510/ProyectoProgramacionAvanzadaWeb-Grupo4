@@ -212,8 +212,67 @@ namespace ApiProyecto.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("MisCitasCalendario")]
+        [Authorize]
+        public ActionResult MisCitasCalendario()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
 
+            long IdUsuario = long.Parse(idUsuarioClaim.Value);
 
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var citas = context.Query<Cita>(
+                    "ObtenerCitasPorUsuario",
+                    new { IdUsuario },
+                    commandType: CommandType.StoredProcedure
+                ).Select(c => new
+                {
+                    title = c.Descripcion,
+                    start = c.HoraFecha.ToString("yyyy-MM-ddTHH:mm:ss"),
+                    descripcion = c.Descripcion,
+                    horarioTexto = c.HoraFecha.ToString("dd/MM/yyyy hh:mm tt"),
+                    color = "#4CAF50"
+                }).ToList();
+
+                return Ok(citas); 
+            }
+        }
+
+        [HttpGet]
+        [Route("TodasCitasCalendario")]
+        [Authorize]
+        public ActionResult TodasCitasCalendario()
+        {
+            var idUsuarioClaim = User.Claims.FirstOrDefault(c => c.Type == "IdUsuario");
+            if (idUsuarioClaim == null)
+                return Unauthorized(_utilitarios.RespuestaIncorrecta("Token no válido o sin IdUsuario"));
+
+            long IdUsuario = long.Parse(idUsuarioClaim.Value);
+
+            using (var context = new SqlConnection(_configuration.GetSection("ConnectionStrings:Connection").Value))
+            {
+                var citas = context.Query(
+                    "ObtenerTodasLasCitas",
+                    commandType: CommandType.StoredProcedure
+                )
+                .Select(c => new
+                {
+                    title = $"{c.Nombre} - {c.Descripcion}", 
+                    start = ((DateTime)c.HoraFecha).ToString("yyyy-MM-ddTHH:mm:ss"),
+                    nombre = c.Nombre,
+                    descripcion = c.Descripcion,
+                    horarioTexto = ((DateTime)c.HoraFecha).ToString("dd/MM/yyyy hh:mm tt"),
+                    color = "#4CAF50"
+                })
+                .ToList();
+
+                return Ok(citas);
+            }
+        }
 
     }
 
@@ -221,6 +280,12 @@ namespace ApiProyecto.Controllers
 
 
 
-
 }
+
+
+
+
+
+
+
 
